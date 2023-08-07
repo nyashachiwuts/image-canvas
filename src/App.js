@@ -2,6 +2,7 @@ import React from "react";
 import { Stage, Layer, Image } from "react-konva";
 import useImage from "use-image";
 import ImageUploading from "react-images-uploading";
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
 
 const URLImage = ({ image }) => {
   const [img] = useImage(image.src);
@@ -27,9 +28,9 @@ const App = () => {
   };
 
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-3">
-        <h1 className="text-3xl font-bold ">Image Canvas</h1>
+    <div className="grid grid-cols-12 gap-4 p-2">
+      <div className="col-span-3 p-6">
+        <h1 className="text-3xl font-bold mb-4">Image Canvas</h1>
         <ImageUploading
           multiple
           value={images}
@@ -47,25 +48,24 @@ const App = () => {
             isDragging,
             dragProps,
           }) => (
-            // write your building UI
             <div className="upload__image-wrapper">
               <button
                 style={isDragging ? { color: "red" } : null}
                 onClick={onImageUpload}
                 {...dragProps}
-                className="border border-black"
+                className="text-white text-md p-2 bg-[#1abc9c] rounded-sm"
               >
-                Click or Drop here
+                Upload Images
               </button>
               &nbsp;
               <button
                 onClick={onImageRemoveAll}
-                className="border border-black"
+                className="text-white text-md p-2 bg-[#e74c3c] rounded-sm mb-6"
               >
-                Remove all images
+                Remove Images
               </button>
               {imageList.map((image, index) => (
-                <div key={index} className="image-item">
+                <div key={index} className="flex flex-row mb-6">
                   <img
                     src={image.data_url}
                     alt=""
@@ -75,9 +75,21 @@ const App = () => {
                       dragUrl.current = e.target.src;
                     }}
                   />
-                  <div className="image-item__btn-wrapper">
-                    <button onClick={() => onImageUpdate(index)}>Update</button>
-                    <button onClick={() => onImageRemove(index)}>Remove</button>
+                  <div className="flex flex-col">
+                    <button
+                      onClick={() => onImageUpdate(index)}
+                      className="flex flex-row bg-[#3498db] px-3 py-2"
+                    >
+                      <FaPencilAlt color="#fff" size={20} />
+                      <span className="text-white ml-2">EDIT</span>
+                    </button>
+                    <button
+                      onClick={() => onImageRemove(index)}
+                      className="flex flex-row bg-[#e74c3c] px-3 py-2"
+                    >
+                      <FaTrash color="#fff" size={20} />
+                      <span className="text-white ml-2">DELETE</span>
+                    </button>
                   </div>
                 </div>
               ))}
@@ -105,8 +117,8 @@ const App = () => {
         <Stage
           width={window.innerWidth}
           height={window.innerHeight}
-          style={{ border: "1px solid grey" }}
           ref={stageRef}
+          className="bg-gray-400"
         >
           <Layer>
             {images.map((image, index) => {
